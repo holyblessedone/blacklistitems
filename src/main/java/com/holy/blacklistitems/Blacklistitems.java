@@ -51,7 +51,7 @@ public class Blacklistitems {
     public void onRegisterCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(
                 Commands.literal("bli")
-                        .requires(cs -> cs.hasPermission(2)) // Только операторы
+                        .requires(cs -> cs.hasPermission(2))
                         .then(Commands.literal("add")
                                 .executes(this::addItemToBlacklist)
                         )
@@ -64,7 +64,7 @@ public class Blacklistitems {
 
         ItemStack stack = player.getMainHandItem();
         if (stack.isEmpty()) {
-            source.sendFailure(net.minecraft.network.chat.Component.literal("Ваша правая рука пуста."));
+            source.sendFailure(net.minecraft.network.chat.Component.literal("Your main hand is empty"));
             return 0;
         }
 
@@ -72,9 +72,9 @@ public class Blacklistitems {
 
         if (blacklist.add(id)) {
             saveBlacklist();
-            source.sendSuccess(() -> Component.literal("Добавлено в черный список: " + id), true);
+            source.sendSuccess(() -> Component.literal("Added to the blacklist: " + id), true);
         } else {
-            source.sendFailure(Component.literal("Этот предмет уже в черном списке."));
+            source.sendFailure(Component.literal("This item is already on the blacklist."));
         }
         return 1;
     }
@@ -118,7 +118,7 @@ public class Blacklistitems {
             if (stack.isEmpty()) continue;
             String id = stack.getItem().toString();
             if (blacklist.contains(id)) {
-                serverPlayer.sendSystemMessage(net.minecraft.network.chat.Component.literal("Предмет " + stack.getDisplayName().getString() + " запрещен на это сервере.")
+                serverPlayer.sendSystemMessage(net.minecraft.network.chat.Component.literal("The " + stack.getDisplayName().getString() + " item is banned on this server!")
                         .withStyle(ChatFormatting.RED));
                 serverPlayer.drop(stack.copy(), false, true);
                 stack.shrink(stack.getCount());
